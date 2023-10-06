@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank Account App</title>
+  </head>
+  <body>
+    <h1>Bank Account App</h1>
+
+    <div>
+      <h2>Saldo Saat Ini:</h2>
+      <p id="balance">-</p>
+    </div>
+
+    <!-- Formulir untuk melakukan Deposit -->
+    <form id="depositForm">
+      <h2>Deposit</h2>
+      <label for="depositAmount">Jumlah:</label>
+      <input type="text" id="depositAmount" required />
+      <!-- Ketika tombol "Deposit" diklik, fungsi performDeposit() akan dipanggil -->
+      <button type="button" onclick="performDeposit()">Deposit</button>
+    </form>
+
+    <!-- Formulir untuk melakukan Penarikan -->
+    <form id="withdrawForm">
+      <h2>Withdraw</h2>
+      <label for="withdrawAmount">Jumlah:</label>
+      <input type="text" id="withdrawAmount" required />
+      <!-- Ketika tombol "Withdraw" diklik, fungsi performWithdraw() akan dipanggil -->
+      <button type="button" onclick="performWithdraw()">Withdraw</button>
+    </form>
+
+    <script src="banking_system.js"></script>
+    <script>
+      const account = new BankAccount();
+      const balanceElement = document.getElementById("balance");
+
+      function displayBalance() {
+        balanceElement.textContent = `Rp${account.getBalance()}`;
+      }
+
+      displayBalance();
+
+      // Fungsi untuk melakukan deposit
+      function performDeposit() {
+        const depositAmount = parseFloat(
+          document.getElementById("depositAmount").value
+        );
+        if (!isNaN(depositAmount) && depositAmount > 0) {
+          account.deposit(depositAmount);
+          // Memperbarui saldo dalam tampilan
+          setTimeout(() => {
+            displayBalance();
+          }, 2000);
+          return;
+        } else if (isNaN(depositAmount)) {
+          // Menampilkan pesan kesalahan dalam alert jika terjadi kesalahan
+          alert("Jumlah deposit harus berupa angka.");
+          return;
+        } else if (depositAmount <= 0) {
+          alert("Jumlah deposit harus lebih dari 0.");
+        }
+      }
+
+      // Fungsi untuk melakukan penarikan
+      function performWithdraw() {
+        const withdrawAmount = parseFloat(
+          document.getElementById("withdrawAmount").value
+        );
+        if (!isNaN(withdrawAmount) && withdrawAmount > 0) {
+          account.withdraw(withdrawAmount);
+          // Memperbarui saldo dalam tampilan
+          setTimeout(() => {
+            displayBalance();
+          }, 2000);
+        } else if (isNaN(withdrawAmount)) {
+          // Menampilkan pesan kesalahan dalam alert jika terjadi kesalahan
+          alert("Jumlah deposit harus berupa angka.");
+        } else if (withdrawAmount <= 0) {
+          // Menampilkan pesan kesalahan dalam alert jika terjadi kesalahan
+          alert("Jumlah penarikan harus lebih dari 0.");
+        }
+      }
+    </script>
+  </body>
+</html>
