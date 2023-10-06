@@ -42,3 +42,15 @@ Properti: - saldo (balance)
 
     Metode getBalance:
         Kembalikan nilai saldo (balance)
+
+#Case Study
+In this case study, we will create a simple Basic Banking System using Object Oriented Programming (OOP) concepts and simulating asynchronous transaction operations.
+
+#Step by step
+- Buatlah repositori baru di GitHub dengan nama Basic-Banking-System.
+- Salin file bank_account.js dari Challenge 1 ke direktori proyek di repositori baru tersebut. File ini akan berisi definisi kelas BankAccount yang akan digunakan dalam implementasi sistem perbankan.
+- Buatlah file JavaScript baru dengan nama banking_system.js. File ini akan menjadi pusat implementasi sistem perbankan menggunakan konsep OOP.
+- Implementasikan kelas BankAccount dengan minimal dua metode:
+    - deposit(amount): Metode ini akan menerima jumlah uang yang akan disimpan ke dalam akun.
+    - withdraw(amount): Metode ini akan menerima jumlah uang yang akan ditarik dari akun, asalkan saldo mencukupi.
+
