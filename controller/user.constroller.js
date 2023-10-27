@@ -8,20 +8,20 @@ function test(req, res) {
 }
 
 async function create(req, res) {
-  const { name, email, password } = req.body;
+  const { name, email, password, identity_type, identity_number, address } = req.body;
   console.log(req.body);
   const payload = {
     name,
     email,
     password,
+    profile: {
+      create: {
+        identity_type,
+        identity_number: parseInt(identity_number),
+        address,
+      }
+    }
   };
-
-  // let objResp = {
-  //     payload
-  // }
-  // let resp = ResponseTemplate(objResp, "success", null, 200);
-  // res.json(resp);
-  // return;
 
   try {
     const user = await prisma.users.create({
@@ -59,6 +59,15 @@ async function getById(req, res) {
       where: {
         id: Number(id),
       },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: false,
+        created_at: true,
+        updated_at: true,
+        deleted_at: true,
+      },
     });
     let resp = ResponseTemplate(user, "success", null, 200);
     res.json(resp);
@@ -71,10 +80,15 @@ async function getById(req, res) {
 }
 
 async function update(req, res) {
+  console.log(req.body);
   const { name, email, password } = req.body;
   const { id } = req.params;
 
-  const payload = {};
+  const payload = {
+    name,
+    email,
+    password,
+  };
 
   if (!name && !email && !password) {
     let resp = ResponseTemplate(null, "bad request", null, 400);
@@ -82,17 +96,17 @@ async function update(req, res) {
     return;
   }
 
-  if (name) {
-    payload.name = name;
-  }
+  // if (name) {
+  //   payload.name = name;
+  // }
 
-  if (email) {
-    payload.email = email;
-  }
+  // if (email) {
+  //   payload.email = email;
+  // }
 
-  if (password) {
-    payload.address = password;
-  }
+  // if (password) {
+  //   payload.address = password;
+  // }
 
   try {
     const user = await prisma.users.update({
