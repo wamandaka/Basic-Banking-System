@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id Int @id @default(autoincrement())
+  name String
+  email String
+  password String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  deleted_at DateTime?
+  profile Profiles[]
+  bank_account BankAccount[]
+}
+
+model Profiles {
+  id Int @id @default(autoincrement())
+  user_id Int
+  identity_type String
+  identity_number Int
+  address String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+  deleted_at DateTime?
+  user Users @relation(fields: [user_id], references: [id])
+}
+
+model BankAccount {
+  id                  Int      @id @default(autoincrement())
+  user_id             Int
+  bank_name           String
+  bank_account_number Int
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @default(now())
+  deleted_at          DateTime?
+  sourceAccount       Transaction[] @relation("SourceTransaction")
+  destinationAccount  Transaction[] @relation("DestinationTransaction")
+  user Users @relation(fields: [user_id], references: [id])
+}
+
+
+model Transaction {
+  id                    Int      @id @default(autoincrement())
+  amount                Float
+  source_account_id     Int
+  destination_account_id Int
+  created_at            DateTime? @default(now())
+  updated_at            DateTime? @default(now())
+  deleted_at            DateTime?
+  sourceAccount         BankAccount @relation("SourceTransaction", fields: [source_account_id], references: [id])
+  destinationAccount    BankAccount @relation("DestinationTransaction", fields: [destination_account_id], references: [id])
+}
