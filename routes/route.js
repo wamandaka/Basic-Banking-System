@@ -4,5 +4,5 @@ const userRoute = require("./user.route");
 const morgan = require("morgan");
 
 router.use(morgan("dev"));
-router.use('/user', userRoute);
+router.use("/api/v1/user", userRoute);
 module.exports = router;

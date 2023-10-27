@@ -1,3 +1,4 @@
+const { func } = require("joi");
 const { ResponseTemplate } = require("../helper/template.helper");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
@@ -79,7 +80,7 @@ async function getById(req, res) {
   }
 }
 
-async function update(req, res) {
+async function updateById(req, res) {
   console.log(req.body);
   const { name, email, password } = req.body;
   const { id } = req.params;
@@ -114,6 +115,34 @@ async function update(req, res) {
         id: Number(id),
       },
       data: payload,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: false,
+        created_at: true,
+        updated_at: true,
+        deleted_at: true,
+      },
+    });
+
+    let resp = ResponseTemplate(user, "success", null, 200);
+    res.json(resp);
+    return;
+  } catch (error) {
+    let resp = ResponseTemplate(null, "internal server error", error, 500);
+    res.json(resp);
+    return;
+  }
+}
+
+async function deleteById(req, res) {
+  const { id } = req.params;
+  try {
+    const user = await prisma.users.delete({
+      where: {
+        id: Number(id),
+      },
     });
 
     let resp = ResponseTemplate(user, "success", null, 200);
@@ -131,5 +160,6 @@ module.exports = {
   create,
   getAll,
   getById,
-  update
+  updateById,
+  deleteById
 };
