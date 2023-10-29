@@ -9,7 +9,8 @@ function test(req, res) {
 }
 
 async function create(req, res) {
-  const { name, email, password, identity_type, identity_number, address } = req.body;
+  const { name, email, password, identity_type, identity_number, address } =
+    req.body;
   console.log(req.body);
   const payload = {
     name,
@@ -20,8 +21,8 @@ async function create(req, res) {
         identity_type,
         identity_number: parseInt(identity_number),
         address,
-      }
-    }
+      },
+    },
   };
 
   try {
@@ -45,6 +46,14 @@ async function getAll(req, res) {
       name: true,
       email: true,
       password: false,
+      profile: {
+        select: {
+          id: false,
+          identity_type: true,
+          identity_number: true,
+          address: true,
+        },
+      }
     },
   });
   let resp = ResponseTemplate(user, "success", null, 200);
@@ -70,9 +79,21 @@ async function getById(req, res) {
         deleted_at: true,
       },
     });
-    let resp = ResponseTemplate(user, "success", null, 200);
-    res.json(resp);
-    return;
+
+    if (user) {
+      let resp = ResponseTemplate(user, "success", null, 200);
+      res.json(resp);
+      return;
+    } else {
+      let resp = ResponseTemplate(
+        null,
+        "bad request/data user not found",
+        null,
+        404
+      );
+      res.json(resp);
+      return;
+    }
   } catch (error) {
     let resp = ResponseTemplate(null, "internal server error", error, 500);
     res.json(resp);
@@ -161,5 +182,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
-  deleteById
+  deleteById,
 };
