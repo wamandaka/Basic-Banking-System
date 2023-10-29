@@ -24,7 +24,7 @@ model Users {
 
 model Profiles {
   id Int @id @default(autoincrement())
-  user_id Int
+  user_id Int @unique
   identity_type String
   identity_number Int
   address String
@@ -36,7 +36,7 @@ model Profiles {
 
 model BankAccount {
   id                  Int      @id @default(autoincrement())
-  user_id             Int
+  user_id             Int 
   bank_name           String
   bank_account_number Int
   created_at          DateTime? @default(now())
