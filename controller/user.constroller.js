@@ -1,6 +1,6 @@
-const { func } = require("joi");
+// const { func } = require("joi");
 const { ResponseTemplate } = require("../helper/template.helper");
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, Prisma } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 function test(req, res) {
@@ -11,7 +11,7 @@ function test(req, res) {
 async function create(req, res) {
   const { name, email, password, identity_type, identity_number, address } =
     req.body;
-  console.log(req.body);
+  // console.log(req.body);
   const payload = {
     name,
     email,
@@ -53,7 +53,7 @@ async function getAll(req, res) {
           identity_number: true,
           address: true,
         },
-      }
+      },
     },
   });
   let resp = ResponseTemplate(user, "success", null, 200);
@@ -77,6 +77,14 @@ async function getById(req, res) {
         created_at: true,
         updated_at: true,
         deleted_at: true,
+        profile: {
+          select: {
+            id: false,
+            identity_type: true,
+            identity_number: true,
+            address: true,
+          },
+        },
       },
     });
 
@@ -159,21 +167,34 @@ async function updateById(req, res) {
 
 async function deleteById(req, res) {
   const { id } = req.params;
-  try {
-    const user = await prisma.users.delete({
-      where: {
-        id: Number(id),
-      },
-    });
 
-    let resp = ResponseTemplate(user, "success", null, 200);
-    res.json(resp);
-    return;
-  } catch (error) {
-    let resp = ResponseTemplate(null, "internal server error", error, 500);
-    res.json(resp);
-    return;
-  }
+  // try {
+  await prisma.profiles.delete({
+    where: {
+      user_id: Number(id),
+    },
+  });
+  const user = await prisma.users.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+  let resp = ResponseTemplate(null, "delete success", null, 200);
+  res.json(resp);
+  return;
+  // } catch (error) {
+  //   let resp = ResponseTemplate(null, "internal server error", error, 500);
+  //   res.json(resp);
+  //   return;
+  //   // if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  //   //   // your code
+  //   //   if (error.code == "P2003") {
+  //   //     let resp = ResponseTemplate(null, "data not found", null, 404);
+  //   //     res.json(resp);
+  //   //     return;
+  //   //   }
+  //   // }
+  // }
 }
 
 module.exports = {
