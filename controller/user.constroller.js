@@ -28,6 +28,20 @@ async function create(req, res) {
   try {
     const user = await prisma.users.create({
       data: payload,
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        password: false,
+        profile: {
+          select: {
+            id: false,
+            identity_type: true,
+            identity_number: true,
+            address: true,
+          },
+        },
+      },
     });
     let resp = ResponseTemplate(user, "success", null, 200);
     res.json(resp);
@@ -174,7 +188,7 @@ async function deleteById(req, res) {
       user_id: Number(id),
     },
   });
-  const user = await prisma.users.delete({
+  await prisma.users.delete({
     where: {
       id: Number(id),
     },
