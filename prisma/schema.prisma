@@ -39,6 +39,7 @@ model BankAccount {
   user_id             Int 
   bank_name           String
   bank_account_number Int
+  balance             Float
   created_at          DateTime? @default(now())
   updated_at          DateTime? @default(now())
   deleted_at          DateTime?
