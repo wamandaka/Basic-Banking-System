@@ -41,6 +41,42 @@ async function create(req, res) {
   }
 }
 
+async function getAll(req, res) {
+  const bank_account = await prisma.bankAccount.findMany({
+    select: {
+      id: true,
+      user_id: true,
+      bank_name: true,
+      bank_account_number: true,
+      balance: true,
+    },
+  });
+  let resp = ResponseTemplate(bank_account, "success", null, 200);
+  res.json(resp);
+  return;
+}
+
+async function getById(req, res) {
+  const { id } = req.params;
+  const bank_account = await prisma.bankAccount.findUnique({
+    where: {
+      id: parseInt(id),
+    },
+    select: {
+      id: true,
+      user_id: true,
+      bank_name: true,
+      bank_account_number: true,
+      balance: true,
+    },
+  });
+  let resp = ResponseTemplate(bank_account, "success", null, 200);
+  res.json(resp);
+  return;
+}
+
 module.exports = {
   create,
+  getAll,
+  getById,
 };
