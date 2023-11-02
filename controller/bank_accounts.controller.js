@@ -70,6 +70,11 @@ async function getById(req, res) {
       balance: true,
     },
   });
+  if (!bank_account) {
+    let resp = ResponseTemplate(null, "data not found", null, 404);
+    res.json(resp);
+    return;
+  }
   let resp = ResponseTemplate(bank_account, "success", null, 200);
   res.json(resp);
   return;
