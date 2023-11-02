@@ -32,16 +32,6 @@ async function create(req, res) {
       },
     });
 
-    if (bank_account ) {
-      let resp = ResponseTemplate(bank_account, "success", null, 200);
-      res.json(resp);
-      return;
-    } else {
-      let resp = ResponseTemplate(null, "internal server error", null, 500);
-      res.json(resp);
-      return;
-    }
-
     // let resp = ResponseTemplate(bank_account, "success", null, 200);
     // res.json(resp);
   } catch (error) {
