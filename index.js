@@ -9,26 +9,26 @@ const swaggerDef = require("./helper/swagger_template.helper");
 
 const port = process.env.PORT || 3000;
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Testing FGA Issue",
-      version: "1.0.0",
-      description: "Your API description",
-    },
-    servers: [
-      {
-        url: "http://localhost:8080",
-      },
-      {
-        url: "http://localhost:3000",
-      },
-    ],
-  },
-  apis: ["./routes/user.route.js"],
-};
-const swaggerSpec = swaggerJsDoc(swaggerOptions);
+// const swaggerOptions = {
+//   swaggerDefinition: {
+//     openapi: "3.0.0",
+//     info: {
+//       title: "Testing FGA Issue",
+//       version: "1.0.0",
+//       description: "Your API description",
+//     },
+//     servers: [
+//       {
+//         url: "http://localhost:8080",
+//       },
+//       {
+//         url: "http://localhost:3000",
+//       },
+//     ],
+//   },
+//   apis: ["./routes/user.route.js", "./routes/bank_accounts.route.js"],
+// };
+const swaggerSpec = swaggerJsDoc(swaggerDef);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
