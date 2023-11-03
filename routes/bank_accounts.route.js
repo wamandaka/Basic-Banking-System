@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {create, getAll, getById} = require("../controller/bank_accounts.controller");
+const {create, getAll, getById, updateById, deleteById} = require("../controller/bank_accounts.controller");
 
 router.post("/", create);
 // router.get("/", getAll);
@@ -9,6 +9,8 @@ router.post("/", create);
  * @swagger
  * /api/v1/accounts:
  *   get:
+ *     tags:
+ *     - "Bank Accounts"
  *     summary: example to get accounts
  *     responses:
  *       200:
@@ -24,7 +26,9 @@ router.get('/', getAll)
  * @swagger
  * /api/v1/accounts/{id}:
  *   get:
- *     summary: Get one user
+ *     tags:
+ *     - "Bank Accounts"
+ *     summary: Get one account
  *     parameters:
  *       - in: path
  *         name: id
@@ -42,4 +46,6 @@ router.get('/', getAll)
  */
 
 router.get('/:id', getById)
+router.put("/:id", updateById);
+router.delete("/:id", deleteById);
 module.exports = router;
