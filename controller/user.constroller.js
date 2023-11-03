@@ -140,18 +140,6 @@ async function updateById(req, res) {
     return;
   }
 
-  // if (name) {
-  //   payload.name = name;
-  // }
-
-  // if (email) {
-  //   payload.email = email;
-  // }
-
-  // if (password) {
-  //   payload.address = password;
-  // }
-
   try {
     const user = await prisma.users.update({
       where: {
