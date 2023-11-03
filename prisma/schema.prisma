@@ -51,9 +51,9 @@ model BankAccount {
 
 model Transaction {
   id                    Int      @id @default(autoincrement())
-  amount                Float
   source_account_id     Int
   destination_account_id Int
+  amount                Float
   created_at            DateTime? @default(now())
   updated_at            DateTime? @default(now())
   deleted_at            DateTime?
