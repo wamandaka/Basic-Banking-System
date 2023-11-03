@@ -80,8 +80,87 @@ async function getById(req, res) {
   return;
 }
 
+async function updateById(req, res) {
+  console.log(req.body);
+  const { id } = req.params;
+  const { user_id, bank_name, bank_account_number, balance } = req.body;
+
+  const payload = {
+    user_id: parseInt(user_id),
+    bank_name,
+    bank_account_number: parseInt(bank_account_number),
+    balance: parseInt(balance),
+  };
+
+  if ( !payload.user_id || !payload.bank_name || !payload.bank_account_number || !payload.balance) {
+    let resp = ResponseTemplate(null, "bad request", null, 400);
+    res.json(resp);
+    return;
+  }
+
+  try {
+    const user = await prisma.bankAccount.update({
+      where: {
+        id: Number(id),
+      },
+      data: payload,
+      select: {
+        user_id: true,
+        bank_name: true,
+        bank_account_number: true,
+        balance: true,
+        created_at: true,
+        updated_at: true,
+        deleted_at: true,
+      },
+    });
+
+    let resp = ResponseTemplate(user, "success", null, 200);
+    res.json(resp);
+    return;
+  } catch (error) {
+    let resp = ResponseTemplate(null, "internal server error", error, 500);
+    res.json(resp);
+    return;
+  }
+}
+
+async function deleteById(req, res) {
+  const { id } = req.params;
+
+  // try {
+  // await prisma.profiles.delete({
+  //   where: {
+  //     user_id: Number(id),
+  //   },
+  // });
+  await prisma.bankAccount.delete({
+    where: {
+      id: Number(id),
+    },
+  });
+  let resp = ResponseTemplate(null, "delete success", null, 200);
+  res.json(resp);
+  return;
+  // } catch (error) {
+  //   let resp = ResponseTemplate(null, "internal server error", error, 500);
+  //   res.json(resp);
+  //   return;
+  //   // if (error instanceof Prisma.PrismaClientKnownRequestError) {
+  //   //   // your code
+  //   //   if (error.code == "P2003") {
+  //   //     let resp = ResponseTemplate(null, "data not found", null, 404);
+  //   //     res.json(resp);
+  //   //     return;
+  //   //   }
+  //   // }
+  // }
+}
+
 module.exports = {
   create,
   getAll,
   getById,
+  updateById,
+  deleteById
 };
