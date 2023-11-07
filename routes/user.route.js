@@ -74,17 +74,25 @@ router.get("/:id", getById);
  *            schema:
  *              type: object
  *              properties:
- *                user_id:
+ *                name:
  *                  type: string
- *                bank_name:
+ *                email:
  *                  type: string
- *                bank_account_number:
+ *                password:
  *                  type: string
- *                balance:
+ *                identity_type:
+ *                  type: string
+ *                identity_number:
+ *                  type: string
+ *                address:
  *                  type: string
  *     responses:
  *       200:
  *         description: Successful response
+ *       400:
+ *         description: Bad Request
+ *       500:
+ *         description: Internal Server Error
  */
 router.post("/", CheckPostReq, create);
 
