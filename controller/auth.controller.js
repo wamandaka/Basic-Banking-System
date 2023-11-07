@@ -38,26 +38,90 @@ module.exports = {
       next(error);
     }
   },
-  authUser: async (email, password, done) => {
+  authUser: async (req, res) => {
     try {
-      const user = await prisma.users.findFirst({
+      const { email, password } = req.body;
+      const checkUser = await prisma.users.findFirst({
         where: {
           email: email,
         },
       });
 
-      const pass = !(await bcrypt.compare(password, user.password));
-
-      if (!user || pass) {
-        return done(null, false, { message: "invalid email or password" });
+      if (user == null) {
+        res.status(400).json({
+          data: null,
+          status: 400,
+          message: "email is not found or incorrect",
+        });
       }
-      // return res.redirect("/dashboard");
-      return done(null, user);
+
+      const checkPassword = await ComparePassword(password, checkUser.password);
+
+      if (!checkPassword) {
+        res.status(400).json({
+          data: null,
+          status: 400,
+          message: "password is not correct",
+        });
+        return;
+      }
+
+      const token = jwt.sign(
+        { email: checkUser.email, user_id: checkUser.id },
+        process.env.SECRET_KEY
+      );
+
+      res.status(200).json({
+        status: 200,
+        message: "success",
+        data: {
+          token,
+        },
+      });
+      return;
     } catch (error) {
-      return done(null, false, { message: error.message });
+      res.status(500).json({
+        data: error.message,
+        status: 500,
+        message: "internal server error",
+      });
     }
   },
+  // authUser: async (email, password, done) => {
+  //   try {
+  //     const user = await prisma.users.findFirst({
+  //       where: {
+  //         email: email,
+  //       },
+  //     });
+
+  //     // const pass = !(await bcrypt.compare(password, user.password));
+
+  //     if (!user || !(await bcrypt.compare(password, user.password))) {
+  //       return done(null, false, { message: "invalid email or password" });
+  //     }
+  //     // return res.redirect("/dashboard");
+  //     return done(null, user);
+  //   } catch (error) {
+  //     return done(null, false, { message: error.message });
+  //   }
+  // },
   dashboard: async (req, res, next) => {
     res.render("dashboard.ejs", { user: req.user });
+  },
+
+  Oauth2: async (req, res) => {
+    let token = jwt.sign(
+      { ...req.user, password: null },
+      process.env.SECRET_KEY
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: " OK",
+      data: {
+        token,
+      },
+    });
   },
 };

@@ -3,10 +3,10 @@ const { ResponseTemplate } = require("../helper/template.helper");
 const { PrismaClient, Prisma } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-function test(req, res) {
-  let resp = ResponseTemplate(null, "Hello World!", null, 200);
-  res.json(resp);
-}
+// function test(req, res) {
+//   let resp = ResponseTemplate(null, "Hello World!", null, 200);
+//   res.json(resp);
+// }
 
 async function create(req, res) {
   const { name, email, password, identity_type, identity_number, address } =
