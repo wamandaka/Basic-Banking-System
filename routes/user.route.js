@@ -16,7 +16,7 @@ const { PrintSuccess, CheckPostReq } = require("../middleware/middleware");
 // router.get('/', getAll);
 // router.get('/:id', getById);
 // router.put("/:id", updateById);
-router.delete("/:id", deleteById);
+// router.delete("/:id", deleteById);
 
 /**
  * @swagger
