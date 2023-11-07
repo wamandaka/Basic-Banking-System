@@ -124,14 +124,26 @@ async function getById(req, res) {
 }
 
 async function updateById(req, res) {
-  console.log(req.body);
-  const { name, email, password } = req.body;
+  const { name, email, password, identity_type, identity_number, address } = req.body;
   const { id } = req.params;
+  console.log(req.body);
 
   const payload = {
     name,
     email,
     password,
+    profile: {
+      update: {
+        where: {
+          user_id: Number(id),
+        },
+        data: {
+          identity_type,
+          identity_number: parseInt(identity_number),
+          address,
+        },
+      },
+    },
   };
 
   if (!name && !email && !password) {
@@ -151,6 +163,14 @@ async function updateById(req, res) {
         name: true,
         email: true,
         password: false,
+        profile: {
+          select: {
+            id: false,
+            identity_type: true,
+            identity_number: true,
+            address: true,
+          },
+        },
         created_at: true,
         updated_at: true,
         deleted_at: true,
@@ -161,8 +181,9 @@ async function updateById(req, res) {
     res.json(resp);
     return;
   } catch (error) {
-    let resp = ResponseTemplate(null, "internal server error", error, 500);
-    res.json(resp);
+    // let resp = ResponseTemplate(null, "internal server error", error, 500);
+    // res.json(resp);
+    console.log(error);
     return;
   }
 }
