@@ -15,7 +15,7 @@ const { PrintSuccess, CheckPostReq } = require("../middleware/middleware");
 // router.post("/", CheckPostReq, create);
 // router.get('/', getAll);
 // router.get('/:id', getById);
-router.put("/:id", updateById);
+// router.put("/:id", updateById);
 router.delete("/:id", deleteById);
 
 /**
@@ -96,16 +96,44 @@ router.get("/:id", getById);
  */
 router.post("/", CheckPostReq, create);
 
-// /**
-//  * @swagger
-//  * /:id:
-//  *   put:
-//  *     summary: update one user
-//  *     responses:
-//  *       200:
-//  *         description: Successful response
-//  */
-// router.put('/:id', Update)
+/**
+ * @swagger
+ * /api/v1/user/{id}:
+ *   put:
+ *     tags:
+ *     - "User"
+ *     summary: update one user
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                email:
+ *                  type: string
+ *                password:
+ *                  type: string
+ *                identity_type:
+ *                  type: string
+ *                identity_number:
+ *                  type: string
+ *                address:
+ *                  type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
+router.put('/:id', updateById)
 
 // /**
 //  * @swagger
