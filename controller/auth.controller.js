@@ -40,7 +40,7 @@ module.exports = {
   },
   authUser: async (email, password, done) => {
     try {
-      const user = await prisma.users.findUnique({
+      const user = await prisma.users.findFirst({
         where: {
           email: email,
         },
@@ -58,6 +58,6 @@ module.exports = {
     }
   },
   dashboard: async (req, res, next) => {
-    res.render("dashboard", { user: req.user });
+    res.render("dashboard.ejs", { user: req.user });
   },
 };

@@ -21,6 +21,6 @@ router.post(
 );
 
 const { dashboard } = require("../controller/auth.controller");
-router.get("/dashboard", dashboard);
+router.get("/dashboard.ejs", dashboard);
 
 module.exports = router;
