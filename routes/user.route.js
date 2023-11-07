@@ -133,17 +133,26 @@ router.post("/", CheckPostReq, create);
  *       200:
  *         description: Successful response
  */
-router.put('/:id', updateById)
+router.put("/:id", updateById);
 
-// /**
-//  * @swagger
-//  * /:id:
-//  *   delete:
-//  *     summary: delete one
-//  *     responses:
-//  *       200:
-//  *         description: Successful response
-//  */
-// router.delete('/:id', Delete)
+/**
+ * @swagger
+ * /api/v1/user/{id}:
+ *   delete:
+ *     tags:
+ *     - "User"
+ *     summary: delete one
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: The ID of the user
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
+router.delete("/:id", deleteById);
 
 module.exports = router;
