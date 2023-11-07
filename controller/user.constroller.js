@@ -191,7 +191,7 @@ async function updateById(req, res) {
 async function deleteById(req, res) {
   const { id } = req.params;
 
-  // try {
+  try {
   await prisma.profiles.delete({
     where: {
       user_id: Number(id),
@@ -205,19 +205,11 @@ async function deleteById(req, res) {
   let resp = ResponseTemplate(null, "delete success", null, 200);
   res.json(resp);
   return;
-  // } catch (error) {
-  //   let resp = ResponseTemplate(null, "internal server error", error, 500);
-  //   res.json(resp);
-  //   return;
-  //   // if (error instanceof Prisma.PrismaClientKnownRequestError) {
-  //   //   // your code
-  //   //   if (error.code == "P2003") {
-  //   //     let resp = ResponseTemplate(null, "data not found", null, 404);
-  //   //     res.json(resp);
-  //   //     return;
-  //   //   }
-  //   // }
-  // }
+  } catch (error) {
+    let resp = ResponseTemplate(null, "internal server error", error, 500);
+    res.json(resp);
+    return;
+  }
 }
 
 module.exports = {
