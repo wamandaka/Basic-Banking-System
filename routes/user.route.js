@@ -7,7 +7,7 @@ const {
   getById,
   updateById,
   deleteById,
-} = require("../controller/user.constroller");
+} = require("../controller/user.controller");
 const { PrintSuccess, CheckPostReq } = require("../middleware/middleware");
 
 // router.use(PrintSuccess)

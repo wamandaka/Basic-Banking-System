@@ -1,0 +1,23 @@
+<h2>Login</h2>
+
+<form action="/login" method="post">
+  <% if(messages.error) { %>
+    <span style="color: red;">
+      <%= messages.error %>
+    </span>
+  <% } %>
+
+  <div class="">
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email">
+  </div>
+  <div class="">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password">
+  </div>
+
+
+  <div class="">
+    <input type="submit" value="login">
+  </div>
+</form>

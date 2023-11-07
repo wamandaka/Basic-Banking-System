@@ -43,12 +43,24 @@ async function create(req, res) {
         },
       },
     });
+    // const existingUser = await prisma.users.findUnique({
+    //   where: {
+    //     email: email,
+    //   },
+    // });
+
+    // if (existingUser) {
+    //   let resp = ResponseTemplate(null, "Email already exist", null, 404);
+    //   res.json(resp);
+    //   return;
+    // }
     let resp = ResponseTemplate(user, "success", null, 200);
     res.json(resp);
     return;
   } catch (error) {
     let resp = ResponseTemplate(null, "internal server error", error, 500);
     res.json(resp);
+    // console.log(error);
     return;
   }
 }
@@ -124,7 +136,8 @@ async function getById(req, res) {
 }
 
 async function updateById(req, res) {
-  const { name, email, password, identity_type, identity_number, address } = req.body;
+  const { name, email, password, identity_type, identity_number, address } =
+    req.body;
   const { id } = req.params;
   console.log(req.body);
 
@@ -192,19 +205,19 @@ async function deleteById(req, res) {
   const { id } = req.params;
 
   try {
-  await prisma.profiles.delete({
-    where: {
-      user_id: Number(id),
-    },
-  });
-  await prisma.users.delete({
-    where: {
-      id: Number(id),
-    },
-  });
-  let resp = ResponseTemplate(null, "delete success", null, 200);
-  res.json(resp);
-  return;
+    await prisma.profiles.delete({
+      where: {
+        user_id: Number(id),
+      },
+    });
+    await prisma.users.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    let resp = ResponseTemplate(null, "delete success", null, 200);
+    res.json(resp);
+    return;
   } catch (error) {
     let resp = ResponseTemplate(null, "internal server error", error, 500);
     res.json(resp);
